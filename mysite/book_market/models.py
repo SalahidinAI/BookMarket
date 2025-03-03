@@ -85,8 +85,8 @@ class Book(models.Model):
 
 # над логикой еще надо думать
 class Author(models.Model):
-    author_first_name = models.CharField()
-    author_last_name = models.CharField()
+    author_first_name = models.CharField(max_length=32)
+    author_last_name = models.CharField(max_length=32)
 
 
 class Genre(models.Model):
@@ -117,3 +117,15 @@ class CommentLike(models.Model):
 
     class Meta:
         unique_together = ('user', 'comment')
+
+
+class Favorite(models.Model):
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+
+
+class FavoriteItem(models.Model):
+    favorite = models.ForeignKey(Favorite, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('favorite', 'book')
