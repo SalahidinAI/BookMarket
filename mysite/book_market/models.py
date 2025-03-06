@@ -9,15 +9,14 @@ from rest_framework.exceptions import ValidationError
 
 class UserProfile(AbstractUser):
     age = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(110)],
+        validators=[MaxValueValidator(110)],
         null=True, blank=True
     )
-    phone_number1 = PhoneNumberField(null=True, blank=True)
-    phone_number2 = PhoneNumberField(null=True, blank=True)
+    phone_number = PhoneNumberField(null=True, blank=True)
 
 
 class Market(models.Model):
-    image = models.ImageField(upload_to='market_images/')
+    logo = models.ImageField(upload_to='market_images/')
     market_name = models.CharField(max_length=64)
     description = models.TextField()
     WORKING_DAYS = (
@@ -48,15 +47,15 @@ class Contact(models.Model):
         unique_together = ('market', 'phone_number')
 
 
-class Event(models.Model):
-    market = models.ForeignKey(Market, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='event_images/', null=True, blank=True)
-    video = models.ImageField(upload_to='event_videos/', null=True, blank=True)
-
-    def clean(self):
-        super().clean()
-        if not self.photo and not self.video:
-            raise ValidationError("Оба поля 'photo' и 'video' не могут быть пустыми.")
+# class Event(models.Model):
+#     market = models.ForeignKey(Market, on_delete=models.CASCADE)
+#     photo = models.ImageField(upload_to='event_images/', null=True, blank=True)
+#     video = models.ImageField(upload_to='event_videos/', null=True, blank=True)
+#
+#     def clean(self):
+#         super().clean()
+#         if not self.photo and not self.video:
+#             raise ValidationError("Оба поля 'photo' и 'video' не могут быть пустыми.")
 
 
 class Subscription(models.Model):
@@ -68,29 +67,35 @@ class Subscription(models.Model):
         unique_together = ('user', 'market')
 
 
+class Genre(models.Model):
+    genre_name = models.CharField(max_length=64)
+
+
 class Book(models.Model):
     book_name = models.CharField(max_length=64)
     book_image= models.ImageField(upload_to='book_images/')
     price = models.PositiveSmallIntegerField()
+    genre = models.ManyToManyField(Genre)
     current_year = datetime.now().year
     released_date = models.PositiveSmallIntegerField(validators=[
-            MinValueValidator(1900), MaxValueValidator(current_year)
+        MaxValueValidator(current_year)
     ])
     pages = models.PositiveSmallIntegerField(validators=[
         MinValueValidator(3), MaxValueValidator(5000)
     ])
-    # age_restriction = models.PositiveSmallIntegerField()
+    AGE_CHOICES = (
+        ('детский', 'детский'),
+        ('взрослый', 'взрослый'),
+    )
+    author = models.CharField(max_length=120)
+    age_restriction = models.CharField(choices=AGE_CHOICES, max_length=16)
     created_date = models.DateTimeField(auto_now_add=True)
 
 
-# над логикой еще надо думать
-class Author(models.Model):
-    author_first_name = models.CharField(max_length=32)
-    author_last_name = models.CharField(max_length=32)
-
-
-class Genre(models.Model):
-    genre_name = models.CharField(max_length=64)
+# # над логикой еще надо думать
+# class Author(models.Model):
+#     author_first_name = models.CharField(max_length=32)
+#     author_last_name = models.CharField(max_length=32)
 
 
 class Like(models.Model):
