@@ -1,0 +1,9 @@
+asgiref==3.8.1
+Django==5.1.6
+django-multiselectfield==0.1.13
+django-phonenumber-field==8.0.0
+djangorestframework==3.15.2
+phonenumbers==8.13.55
+pillow==11.1.0
+python-dotenv==1.0.1
+sqlparse==0.5.3
