@@ -26,10 +26,10 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = '__all__'
+# class EventSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Event
+#         fields = '__all__'
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -44,10 +44,10 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = '__all__'
+# class AuthorSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Author
+#         fields = '__all__'
 
 
 class GenreSerializer(serializers.ModelSerializer):

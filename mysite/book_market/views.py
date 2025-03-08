@@ -23,9 +23,9 @@ class ContactAPIView(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
 
 
-class EventAPIView(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
+# class EventAPIView(viewsets.ModelViewSet):
+#     queryset = Event.objects.all()
+#     serializer_class = EventSerializer
 
 
 class SubscriptionAPIView(viewsets.ModelViewSet):
@@ -38,9 +38,9 @@ class BookAPIView(viewsets.ModelViewSet):
     serializer_class =BookSerializer
 
 
-class AuthorAPIView(viewsets.ModelViewSet):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+# class AuthorAPIView(viewsets.ModelViewSet):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
 
 
 class GenreAPIView(viewsets.ModelViewSet):

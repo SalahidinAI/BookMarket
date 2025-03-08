@@ -3,15 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 router = routers.SimpleRouter()
-router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
-# router.registry(r'user', UserProfileAPIView, basename='user_list')
+router.register(r'user', UserProfileAPIView, basename='user_list')
 
 
 urlpatterns = [
