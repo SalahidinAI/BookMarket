@@ -26,10 +26,10 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = '__all__'
+# class EventSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Event
+#         fields = '__all__'
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -44,10 +44,10 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = '__all__'
+# class AuthorSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Author
+#         fields = '__all__'
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -59,7 +59,8 @@ class GenreSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = '__all__'
+        fields = ['id', 'user', 'book']
+        read_only_fields = ['user']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -71,7 +72,9 @@ class CommentSerializer(serializers.ModelSerializer):
 class CommentLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentLike
-        fields = '__all__'
+        fields = ['id', 'user', 'comment']
+        read_only_fields = ['user']
+
 
 
 class FavoriteSerializer(serializers.ModelSerializer):

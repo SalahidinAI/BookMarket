@@ -98,9 +98,11 @@ class Book(models.Model):
 #     author_last_name = models.CharField(max_length=32)
 
 
+
 class Like(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    like = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -118,6 +120,7 @@ class Comment(models.Model):
 class CommentLike(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    like = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
