@@ -26,14 +26,10 @@ class GenreAdmin(TranslationAdmin, GeneralMedia):
 
 
 admin.site.register(UserProfile)
-# admin.site.register(Market)
 admin.site.register(Branch)
 admin.site.register(Contact)
-# admin.site.register(Event)
 admin.site.register(Subscription)
 admin.site.register(Book)
-# admin.site.register(Author)
-# admin.site.register(Genre)
 admin.site.register(Like)
 admin.site.register(Comment)
 admin.site.register(CommentLike)

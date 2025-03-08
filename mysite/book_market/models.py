@@ -14,6 +14,9 @@ class UserProfile(AbstractUser):
     )
     phone_number = PhoneNumberField(null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.field} - {self.last_name}'
+
 
 class Market(models.Model):
     logo = models.ImageField(upload_to='market_images/')
@@ -33,35 +36,36 @@ class Market(models.Model):
     shift_start = models.TimeField()
     shift_end = models.TimeField()
 
+    def __str__(self):
+        return f'{self.market_name}'
+
 
 class Branch(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE)
     location = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.market} branch'
 
 
 class Contact(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE)
     phone_number = PhoneNumberField()
 
+    def __str__(self):
+        return f'{self.market} contact'
+
     class Meta:
         unique_together = ('market', 'phone_number')
-
-
-# class Event(models.Model):
-#     market = models.ForeignKey(Market, on_delete=models.CASCADE)
-#     photo = models.ImageField(upload_to='event_images/', null=True, blank=True)
-#     video = models.ImageField(upload_to='event_videos/', null=True, blank=True)
-#
-#     def clean(self):
-#         super().clean()
-#         if not self.photo and not self.video:
-#             raise ValidationError("Оба поля 'photo' и 'video' не могут быть пустыми.")
 
 
 class Subscription(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     market = models.ForeignKey(Market, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} --> {self.market}'
 
     class Meta:
         unique_together = ('user', 'market')
@@ -70,8 +74,12 @@ class Subscription(models.Model):
 class Genre(models.Model):
     genre_name = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.genre_name
+
 
 class Book(models.Model):
+    market = models.ForeignKey(Market, on_delete=models.CASCADE)
     book_name = models.CharField(max_length=64)
     book_image= models.ImageField(upload_to='book_images/')
     price = models.PositiveSmallIntegerField()
@@ -91,17 +99,17 @@ class Book(models.Model):
     age_restriction = models.CharField(choices=AGE_CHOICES, max_length=16)
     created_date = models.DateTimeField(auto_now_add=True)
 
-
-# # над логикой еще надо думать
-# class Author(models.Model):
-#     author_first_name = models.CharField(max_length=32)
-#     author_last_name = models.CharField(max_length=32)
+    def __str__(self):
+        return f'{self.book_name} {self.market}'
 
 
 class Like(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'user: {self.user} --> {self.book}'
 
     class Meta:
         unique_together = ('user', 'book')
@@ -114,11 +122,17 @@ class Comment(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.user} --> {self.book}'
+
 
 class CommentLike(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user}'
 
     class Meta:
         unique_together = ('user', 'comment')
@@ -127,10 +141,16 @@ class CommentLike(models.Model):
 class Favorite(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.user}'
+
 
 class FavoriteItem(models.Model):
     favorite = models.ForeignKey(Favorite, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'favorite: {self.favorite}, {self.book}'
 
     class Meta:
         unique_together = ('favorite', 'book')
