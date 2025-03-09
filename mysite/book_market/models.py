@@ -47,17 +47,6 @@ class Contact(models.Model):
         unique_together = ('market', 'phone_number')
 
 
-# class Event(models.Model):
-#     market = models.ForeignKey(Market, on_delete=models.CASCADE)
-#     photo = models.ImageField(upload_to='event_images/', null=True, blank=True)
-#     video = models.ImageField(upload_to='event_videos/', null=True, blank=True)
-#
-#     def clean(self):
-#         super().clean()
-#         if not self.photo and not self.video:
-#             raise ValidationError("Оба поля 'photo' и 'video' не могут быть пустыми.")
-
-
 class Subscription(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     market = models.ForeignKey(Market, on_delete=models.CASCADE)
@@ -90,12 +79,6 @@ class Book(models.Model):
     author = models.CharField(max_length=120)
     age_restriction = models.CharField(choices=AGE_CHOICES, max_length=16)
     created_date = models.DateTimeField(auto_now_add=True)
-
-
-# # над логикой еще надо думать
-# class Author(models.Model):
-#     author_first_name = models.CharField(max_length=32)
-#     author_last_name = models.CharField(max_length=32)
 
 
 class Like(models.Model):
