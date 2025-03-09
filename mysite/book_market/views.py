@@ -3,6 +3,7 @@ from .serializers import *
 from rest_framework import viewsets
 
 
+
 class UserProfileAPIView(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
