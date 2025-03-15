@@ -8,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class UserProfile(AbstractUser):
+    profile_image = models.ImageField(upload_to='user_images/', null=True, blank=True)
     age = models.PositiveSmallIntegerField(
         validators=[MaxValueValidator(110)],
         null=True, blank=True
@@ -15,7 +16,13 @@ class UserProfile(AbstractUser):
     phone_number = PhoneNumberField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.field} - {self.last_name}'
+        return f'{self.first_name} - {self.last_name}'
+
+    def get_followings_quantity(self):
+        all_followings = self.user_subscriptions.all()
+        if all_followings.exists:
+            return len(all_followings)
+        return 0
 
 
 class Market(models.Model):
@@ -35,21 +42,32 @@ class Market(models.Model):
     # добавь 24 часа
     shift_start = models.TimeField()
     shift_end = models.TimeField()
+    owner = models.OneToOneField(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.market_name}'
 
+    def get_followers_quantity(self):
+        all_follower = self.market_subscriptions.all()
+        if all_follower.exists:
+            return len(all_follower)
+        return 0
+
 
 class Branch(models.Model):
-    market = models.ForeignKey(Market, on_delete=models.CASCADE)
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name='market_branches')
     location = models.CharField(max_length=255)
 
     def __str__(self):
         return f'{self.market} branch'
 
+    class Meta:
+        verbose_name = 'Филиал'
+        verbose_name_plural = 'Филиалы'
+
 
 class Contact(models.Model):
-    market = models.ForeignKey(Market, on_delete=models.CASCADE)
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name='market_contacts')
     phone_number = PhoneNumberField()
 
     def __str__(self):
@@ -60,8 +78,8 @@ class Contact(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    market = models.ForeignKey(Market, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user_subscriptions')
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name='market_subscriptions')
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -69,6 +87,7 @@ class Subscription(models.Model):
 
     class Meta:
         unique_together = ('user', 'market')
+        verbose_name_plural = 'Подписки'
 
 
 class Genre(models.Model):
@@ -79,7 +98,7 @@ class Genre(models.Model):
 
 
 class Book(models.Model):
-    market = models.ForeignKey(Market, on_delete=models.CASCADE)
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name='market_books')
     book_name = models.CharField(max_length=64)
     book_image= models.ImageField(upload_to='book_images/')
     price = models.PositiveSmallIntegerField()
@@ -146,7 +165,7 @@ class Favorite(models.Model):
 
 
 class FavoriteItem(models.Model):
-    favorite = models.ForeignKey(Favorite, on_delete=models.CASCADE)
+    favorite = models.ForeignKey(Favorite, on_delete=models.CASCADE,  related_name='favorite_items')
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
     def __str__(self):
