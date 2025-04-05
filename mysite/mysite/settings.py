@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     'django_rest_passwordreset',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -167,6 +168,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=6000),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=50),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
+    # "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ('Bearer',),
 }

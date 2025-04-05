@@ -1,3 +1,4 @@
+from rest_framework.views import APIView
 from .models import *
 from .serializers import *
 from rest_framework import viewsets, generics
@@ -35,15 +36,9 @@ class CustomLoginView(TokenObtainPairView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class LogoutView(generics.GenericAPIView):
+class LogoutView(APIView):
     def post(self, request, *args, **kwargs):
-        try:
-            refresh_token = request.data["refresh"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
-        except Exception:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
 
 
 class UserProfileListAPIView(generics.ListAPIView):

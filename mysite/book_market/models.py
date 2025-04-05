@@ -102,6 +102,7 @@ class Book(models.Model):
     book_name = models.CharField(max_length=64)
     book_image= models.ImageField(upload_to='book_images/')
     price = models.PositiveSmallIntegerField()
+    description = models.TextField(null=True, blank=True)
     genre = models.ManyToManyField(Genre)
     current_year = datetime.now().year
     released_date = models.PositiveSmallIntegerField(validators=[
