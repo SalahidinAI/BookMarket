@@ -249,3 +249,4 @@ def toggle_comment_like(request, comment_id):
         return Response({'detail': 'Comment_like deleted'}, status=status.HTTP_200_OK)
 
     return Response({'detail': 'Comment_like created'}, status=status.HTTP_201_CREATED)
+
